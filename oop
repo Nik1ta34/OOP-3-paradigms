@@ -1,0 +1,65 @@
+from math import sqrt
+
+
+class Point:
+
+    def __init__(self, point_x, point_y):
+        self.x = point_x
+        self.y = point_y
+
+    def move(self, xx, yy):
+        self.x += xx
+        self.y += yy
+
+    def length(self, points):
+        length_x = self.x - points.x
+        length_y = self.y - points.y
+        return round(sqrt(length_x ** 2 + length_y ** 2), 2)
+
+    def out(self):
+        return self.x, self.y
+
+
+class PatchedPoint(Point):
+
+    def __init__(self, arg1=None, arg2=None):
+        if arg1 is None and arg2 is None:
+            super().__init__(0, 0)
+        elif isinstance(arg1, tuple):
+            super().__init__(*arg1)
+        else:
+            super().__init__(arg1, arg2)
+
+    def __str__(self):
+        return f'{self.out()}'
+
+    def __repr__(self):
+        if isinstance(self.out(), tuple):
+            return f'PatchedPoint({self.out()[0]}, {self.out()[1]})'
+
+
+class NewPoint:
+
+    def __init__(self, point_x, point_y):
+        self.x = point_x
+        self.y = point_y
+
+    def output_coord(self):
+        return (self.x, self.y)
+
+    def __str__(self):
+        return f'{self.output_coord()}'
+
+
+def area(arg1, arg2):
+    return abs(arg1.out()[0] - arg2.output_coord()[0]) * abs(arg1.out()[1] - arg2.output_coord()[1])
+
+
+def perimetr(arg1, arg2):
+    return (abs(arg1.out()[0] - arg2.output_coord()[0]) + abs(arg1.out()[1] - arg2.output_coord()[1])) * 2
+
+
+if __name__ == '__main__':
+    point1 = PatchedPoint(1, 1)
+    point2 = NewPoint(8, 10)
+    print(point1, point2, perimetr(point1, point2))
